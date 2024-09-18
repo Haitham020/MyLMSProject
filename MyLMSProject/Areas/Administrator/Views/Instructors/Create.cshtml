@@ -1,0 +1,50 @@
+﻿@model MyLMSProject.Models.Instructor
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Instructor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InstructorName" class="control-label"></label>
+                <input asp-for="InstructorName" class="form-control" />
+                <span asp-validation-for="InstructorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstructorEmail" class="control-label"></label>
+                <input asp-for="InstructorEmail" class="form-control" />
+                <span asp-validation-for="InstructorEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstructorPosition" class="control-label"></label>
+                <input asp-for="InstructorPosition" class="form-control" />
+                <span asp-validation-for="InstructorPosition" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LinkedInUrl" class="control-label"></label>
+                <input asp-for="LinkedInUrl" class="form-control" />
+                <span asp-validation-for="LinkedInUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstructorImg" class="control-label"></label>
+                <input asp-for="InstructorImg" class="form-control" />
+                <span asp-validation-for="InstructorImg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -14,6 +14,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Administrator\Data\" />
+    <Folder Include="Areas\Administrator\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\dashboard\vendors\bootstrap-wysihtml5\.settings\.gitignore" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Menu>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> _signInManager
+
+<nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
+    <a asp-action="Index" asp-controller="Home" class="navbar-brand ml-lg-3">
+        <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-book-reader mr-3"></i>LMS</h1>
+    </a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
+        <div class="navbar-nav mx-auto py-0">
+            @foreach (var parentMenu in Model.Where(m => m.ParentId == 0))
+            {
+                var childMenus = Model.Where(m => m.ParentId == parentMenu.MenuId).ToList();
+
+                if (childMenus.Any())
+                {
+                    <div class="nav-item dropdown">
+                        <a asp-action="@parentMenu.MenuUrl" asp-controller="@parentMenu.MenuController" class="nav-link dropdown-toggle" data-toggle="dropdown">@parentMenu.MenuTitle</a>
+                        <div class="dropdown-menu m-0">
+                            @foreach (var childMenu in childMenus)
+                            {
+                                <a asp-action="@childMenu.MenuUrl" asp-controller="@childMenu.MenuController" class="dropdown-item">@childMenu.MenuTitle</a>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a asp-action="@parentMenu.MenuUrl" asp-controller="@parentMenu.MenuController" class="nav-item nav-link">@parentMenu.MenuTitle</a>
+                }
+            }
+        </div>
+        @if (_signInManager.IsSignedIn(User))
+        {
+            <button type="submit" asp-action="Logout" asp-controller="Account" class="btn btn-primary py-2 px-4 d-none d-lg-block">Logout @User.Identity!.Name</button>
+        }
+        else
+        {
+            <a asp-action="Register" asp-controller="Account" class="btn btn-primary py-2 px-4 d-none d-lg-block">Join Us</a>
+        }
+    </div>
+</nav>

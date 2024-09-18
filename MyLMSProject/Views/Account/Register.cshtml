@@ -1,0 +1,46 @@
+﻿@model MyLMSProject.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register New Account</h1>
+
+<hr />
+<div class="col-lg-7">
+    <div class="contact-form">
+        <form method="post" asp-action="Register" asp-controller="Account">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-6 form-group">
+                    <input asp-for="UserName" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your Name" required>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="col-6 form-group">
+                    <input asp-for="Email" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your Email" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input asp-for="Password" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Password" required>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="ConfirmPassword" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Confirm Password" required>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Mobile" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Mobile Number" required>
+                <span asp-validation-for="Mobile" class="text-danger"></span>
+            </div>
+
+            <div>
+                <button class="btn btn-primary py-3 px-5" type="submit">Register</button>
+            </div>
+        </form>
+        <a asp-action="Login" asp-controller="Account" class="btn btn-danger py-3 px-5">Have An Account? Login</a>
+    </div>
+</div>
+
+
+

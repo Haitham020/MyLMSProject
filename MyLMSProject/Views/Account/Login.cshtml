@@ -1,0 +1,37 @@
+﻿@model MyLMSProject.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<hr />
+<div class="col-lg-7">
+    <div class="contact-form">
+        <form method="post" asp-action="Login" asp-controller="Account">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-6 form-group">
+                    <input asp-for="Email" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Enter Email" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input asp-for="Password" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Password" required>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                </label>
+            </div>
+          
+            <div>
+                <button class="btn btn-primary py-3 px-5" type="submit">Login</button>
+            </div>
+        </form>
+        <a asp-action="Register" asp-controller="Account" class="btn btn-danger py-3 px-5">Don't Have An Account? Register</a>
+    </div>
+</div>
+
