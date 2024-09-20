@@ -49,8 +49,17 @@
                 <span asp-validation-for="CourseLecture" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Dept">
+                    <option value="">-- Select Category --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="CourseType" class="control-label"></label>
-                <select asp-for="CourseType" class="form-control"></select>
+                <select asp-for="CourseType" class="form-control" asp-items="ViewBag.Type">
+                    <option value="">-- Select Category --</option>
+                </select>
                 <span asp-validation-for="CourseType" class="text-danger"></span>
             </div>
             <div class="form-group form-check">

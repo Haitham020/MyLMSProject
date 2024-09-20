@@ -55,10 +55,24 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstructorId,InstructorName,InstructorEmail,InstructorPosition,LinkedInUrl,InstructorImg")] Instructor instructor)
+        public async Task<IActionResult> Create(Instructor instructor, IFormFile ImgFile)
         {
             if (ModelState.IsValid)
             {
+
+                if (ImgFile != null && ImgFile.Length > 0)
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot/img", ImgFile.FileName);
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await ImgFile.CopyToAsync(stream);
+                    }
+
+                    instructor.InstructorImg = ImgFile.FileName;
+                }
+
+
                 _context.Add(instructor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -87,7 +101,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstructorId,InstructorName,InstructorEmail,InstructorPosition,LinkedInUrl,InstructorImg")] Instructor instructor)
+        public async Task<IActionResult> Edit(int id, Instructor instructor, IFormFile ImgFile)
         {
             if (id != instructor.InstructorId)
             {
@@ -98,6 +112,20 @@ namespace MyLMSProject.Areas.Administrator.Controllers
             {
                 try
                 {
+
+                    if (ImgFile != null && ImgFile.Length > 0)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                            "wwwroot/img", ImgFile.FileName);
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await ImgFile.CopyToAsync(stream);
+                        }
+
+                        instructor.InstructorImg = ImgFile.FileName;
+                    }
+
+
                     _context.Update(instructor);
                     await _context.SaveChangesAsync();
                 }

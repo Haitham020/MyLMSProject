@@ -15,21 +15,27 @@
         @foreach(var course in Model)
         {
             <div class="courses-item position-relative">
-                <img class="img-fluid" src="~/img/courses-1.jpg" alt="">
+                <img class="img-fluid" src="~/img/@course.CourseImg" alt="">
                 <div class="courses-text">
                     <h4 class="text-center text-white px-3">@course.CourseTitle</h4>
                     <div class="border-top w-100 mt-3">
                         <div class="d-flex justify-content-between p-4">
                             <span class="text-white"><i class="fa fa-user mr-2"></i>@course.CourseLanguage</span>
-                            <span class="text-white"><i class="fa fa-star mr-2"></i>@course.CourseHours</span>
+                            <span class="text-white"><i class="fa fa-star mr-2"></i>@course.CourseHours hours</span>
                         </div>
                     </div>
                     <div class="w-100 bg-white text-center p-4">
-                        <a class="btn btn-primary" asp-action="CourseDetails" asp-controller="Courses">Course Detail</a>
+                        <a class="btn btn-primary" asp-action="CourseDetails" asp-controller="Courses"
+                        asp-route-id="@course.CourseId">
+                            Course Details</a>
                     </div>
                 </div>
             </div>
         }
     </div>
 </div>
-<!-- Courses End -->
+<div class="w-100 bg-white text-center">
+    <a class="btn btn-warning" asp-action="AllCourses" asp-controller="Courses">View All Courses</a>
+
+</div>
+

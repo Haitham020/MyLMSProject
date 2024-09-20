@@ -1,4 +1,7 @@
-﻿namespace MyLMSProject.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MyLMSProject.Models
 {
     public class Course : SharedProp
     {
@@ -16,5 +19,18 @@
             Online, Recorded
         }
 
+        [Required]
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }
+
+        public ICollection<UserCourse>? UserCourses { get; set; }
+
+        public ICollection<Comment>? Comments { get; set; }
+
+        [Required]
+        [ForeignKey("Instructor")]
+        public int InstructorId { get; set; }
+        public Instructor? Instructor { get; set; }
     }
 }

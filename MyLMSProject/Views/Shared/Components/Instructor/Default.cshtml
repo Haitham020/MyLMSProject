@@ -11,10 +11,12 @@
             @foreach(var item in Model)
             {
                 <div class="team-item">
-                    <img class="img-fluid w-100" src="~/img/team-1.jpg" alt="">
+                    <img class="img-fluid w-100" src="~/img/@item.InstructorImg" alt="">
                     <div class="bg-light text-center p-4">
-                        <h5 class="mb-3">@item.InstructorName</h5>
-                        <p class="mb-2">@item.InstructorPosition</p>
+                        <a asp-action="InstructorDetails" asp-controller="Instructor">
+                            <h5 class="mb-3">@item.InstructorName</h5>
+                            <p class="mb-2">@item.InstructorPosition</p>
+                        </a>
                         <div class="d-flex justify-content-center">
                             <a class="mx-1 p-1" href="#"><i class="fab fa-twitter"></i></a>
                             <a class="mx-1 p-1" href="#"><i class="fab fa-facebook-f"></i></a>

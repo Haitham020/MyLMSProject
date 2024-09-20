@@ -23,7 +23,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // GET: Administrator/Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Courses.ToListAsync());
+            return View(await _context.Courses.Include(x => x.Category).ToListAsync());
         }
 
         // GET: Administrator/Courses/Details/5
@@ -34,7 +34,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
+            var course = await _context.Courses.Include(x => x.Category)
                 .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
@@ -47,6 +47,8 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // GET: Administrator/Courses/Create
         public IActionResult Create()
         {
+            ViewBag.Dept = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewBag.Type = new SelectList(Enum.GetValues(typeof(Course.Type)));
             return View();
         }
 
@@ -55,14 +57,28 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseId,CourseTitle,CourseDescription,CourseImg,CourseHours,CourseLanguage,CoursePrice,CourseLecture,CourseType,IsActive,IsDeleted")] Course course)
+        public async Task<IActionResult> Create(Course course, IFormFile ImgFile)
         {
             if (ModelState.IsValid)
             {
+                if (ImgFile != null && ImgFile.Length > 0)
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot/img", ImgFile.FileName);
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await ImgFile.CopyToAsync(stream);
+                    }
+
+                    course.CourseImg = ImgFile.FileName;
+                }
+
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Dept = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewBag.Type = new SelectList(Enum.GetValues(typeof(Course.Type)));
             return View(course);
         }
 
@@ -79,6 +95,8 @@ namespace MyLMSProject.Areas.Administrator.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Dept = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewBag.Type = new SelectList(Enum.GetValues(typeof(Course.Type)));
             return View(course);
         }
 
@@ -87,7 +105,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseId,CourseTitle,CourseDescription,CourseImg,CourseHours,CourseLanguage,CoursePrice,CourseLecture,CourseType,IsActive,IsDeleted")] Course course)
+        public async Task<IActionResult> Edit(int id, Course course, IFormFile ImgFile)
         {
             if (id != course.CourseId)
             {
@@ -98,6 +116,20 @@ namespace MyLMSProject.Areas.Administrator.Controllers
             {
                 try
                 {
+
+                    if (ImgFile != null && ImgFile.Length > 0)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                            "wwwroot/img", ImgFile.FileName);
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await ImgFile.CopyToAsync(stream);
+                        }
+
+                        course.CourseImg = ImgFile.FileName;
+                    }
+
+
                     _context.Update(course);
                     await _context.SaveChangesAsync();
                 }
@@ -131,7 +163,8 @@ namespace MyLMSProject.Areas.Administrator.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.Type = new SelectList(Enum.GetValues(typeof(Course.Type)));
+            ViewBag.Dept = new SelectList(_context.Categories, "CategoryId", "CategoryName");
             return View(course);
         }
 

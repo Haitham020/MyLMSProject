@@ -1,4 +1,6 @@
-﻿namespace MyLMSProject.Models
+﻿
+
+namespace MyLMSProject.Models
 {
     public class Instructor
     {
@@ -9,5 +11,7 @@
         public string? LinkedInUrl { get; set; }
         public string? InstructorImg {  get; set; }
 
+
+        public ICollection<Course>? Courses { get; set; }
     }
 }

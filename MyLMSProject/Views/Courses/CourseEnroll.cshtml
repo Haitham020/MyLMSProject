@@ -1,0 +1,64 @@
+﻿@model MyLMSProject.Models.Course
+
+@{
+    ViewData["Title"] = "CourseEnroll";
+}
+
+<h1>CourseEnroll</h1>
+
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseImg)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/img/@Model.CourseImg"/>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseHours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseHours)
+        </dd>
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CoursePrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CoursePrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category!.CategoryName)
+    </dl>
+</div>
+<div>
+    <form asp-action="CourseEnroll" asp-controller="Courses" method="post">
+        <input type="hidden" asp-for="CourseId" />
+        <input type="submit" value="Purchase for @Model.CoursePrice" class="btn btn-primary" /> |
+    </form>
+    <a asp-action="Index" asp-controller="Home">Back</a>
+</div>
+

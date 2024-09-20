@@ -1,0 +1,184 @@
+﻿@model Course
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> _signInManager
+
+
+@{
+    ViewData["Title"] = "CourseDetails";
+}
+
+<h1>CourseDetails</h1>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>@ViewData["Title"]</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="~/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+
+    <!-- Detail Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="mb-5">
+                        <div class="section-title position-relative mb-5">
+                            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Course Details</h6>
+                            <h1 class="display-4">@Model.CourseTitle</h1>
+                        </div>
+                        <img class="img-fluid rounded w-100 mb-4" src="~/img/header.jpg" alt="Image">
+                        <p>Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam dolor diam ipsum et, tempor voluptua sit consetetur sit. Aliquyam diam amet diam et eos sadipscing labore. Clita erat ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus clita duo justo et tempor consetetur takimata eirmod, dolores takimata consetetur invidunt magna dolores aliquyam dolores dolore. Amet erat amet et magna</p>
+
+                        <p>
+                            Sadipscing labore amet rebum est et justo gubergren. Et eirmod ipsum sit diam ut magna lorem.
+                            Nonumy vero labore lorem sanctus rebum et lorem magna kasd, stet amet magna accusam
+                            consetetur eirmod. Kasd accusam sit ipsum sadipscing et at at sanctus et. Ipsum sit
+                            gubergren dolores et, consetetur justo invidunt at et aliquyam ut et vero clita. Diam sea
+                            sea no sed dolores diam nonumy, gubergren sit stet no diam kasd vero.
+                        </p>
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-4 mt-5 mt-lg-0">
+                    <div class="bg-primary mb-5 py-3">
+                        <h3 class="text-white py-3 px-4 m-0">Course Features</h3>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3"></h6>
+                            <h6 class="text-white my-3">John Doe</h6>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">@Html.DisplayNameFor(model => model.CourseType)</h6>
+                            <h6 class="text-white my-3">@Model.CourseType</h6>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">@Html.DisplayNameFor(model => model.CourseLecture)</h6>
+                            <h6 class="text-white my-3">@Model.CourseLecture</h6>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom px-4">
+                            <h6 class="text-white my-3">@Html.DisplayNameFor(model => model.CourseHours)</h6>
+                            <h6 class="text-white my-3">@Model.CourseHours</h6>
+                        </div>
+
+                        <div class="d-flex justify-content-between px-4">
+                            <h6 class="text-white my-3">@Html.DisplayNameFor(model => model.CourseLanguage)</h6>
+                            <h6 class="text-white my-3">@Model.CourseLanguage</h6>
+                        </div>
+                        <div class="d-flex justify-content-between px-4">
+                            <h6 class="text-white my-3">@Html.DisplayNameFor(model => model.Category!.CategoryName)</h6>
+                            <h6 class="text-white my-3">@Model.Category!.CategoryName</h6>
+                        </div>
+                        <h5 class="text-white py-3 px-4 m-0"> @Html.DisplayNameFor(model => model.CoursePrice): $@Model.CoursePrice</h5>
+                        <div class="py-3 px-4">
+                            <a asp-route-id="@Model.CourseId" asp-action="CourseEnroll" asp-controller="Courses" class="btn btn-block btn-secondary py-3 px-5">Enroll Now</a>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <h2 class="mb-3">Categories</h2>
+                        @foreach (var item in ViewBag.Category)
+                        {
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <h3 class="text-decoration-none h6 m-0">@item.CategoryName</h3>
+                                    <span class="badge badge-primary badge-pill">@item.Courses.Count</span>
+                            </ul>
+                        }
+
+                    </div>
+
+                    <div class="mb-5">
+                        <h2 class="mb-4">Discover All Courses</h2>
+                        <a class="btn btn-block btn-secondary py-3 px-5" asp-action="AllCourses" asp-controller="Courses">Click Here!</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail End -->
+    <h2 class="display-4">Comment Section</h2>
+    <hr />
+    @if (_signInManager.IsSignedIn(User))
+    {
+        
+        <h3>Comment as: <span class="text my-3">@User.Identity!.Name</span></h3>
+        <form asp-action="PostComment" method="post">
+            <input type="hidden" name="CourseId" value="@Model.CourseId" />
+            <textarea class="form-control border-top-0 border-right-0 border-left-0 p-0" name="text" placeholder="Write your comment..."></textarea>
+            <button class="btn btn-primary" type="submit">Post Comment</button>
+        </form>
+    }
+    else
+    {
+        <h3 class="alert">Please Login To Post Comment</h3>
+        <a asp-action="Login" asp-controller="Account" class="btn btn-primary">Login</a>
+    }
+
+    <hr />
+    <h3>Comments</h3>
+
+    @if (Model.Comments != null && Model.Comments.Any())
+    {
+        foreach (var comment in Model.Comments)
+        {
+            <div class="col-lg-4 mt-5 mt-lg-0">
+                <p><strong>@comment.User?.UserName</strong> (@comment.CommentCreatedAt)</p>
+                <p>@comment.CommentText</p>
+            </div>
+            <hr />
+        }
+    }
+    else
+    {
+        <p>No comments yet. Be the first to comment!</p>
+    }
+
+
+    
+    
+    
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary rounded-0 btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/counterup/counterup.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/js/main.js"></script>
+</body>
+
+</html>

@@ -33,9 +33,18 @@
                 }
             }
         </div>
-        @if (_signInManager.IsSignedIn(User))
+        @if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
         {
-            <button type="submit" asp-action="Logout" asp-controller="Account" class="btn btn-primary py-2 px-4 d-none d-lg-block">Logout @User.Identity!.Name</button>
+            <form method="post">
+                <button type="submit" asp-action="Logout" asp-controller="Account" class="btn btn-primary py-2 px-4 d-none d-lg-block">Logout @User.Identity!.Name</button>
+            </form>
+            <a asp-area="Administrator" asp-action="Index" asp-controller="ControlPanel" class="btn btn-warning py-2 px-4 d-none d-lg-block">Enter Admin Dashboard</a>
+        }
+        else if (_signInManager.IsSignedIn(User))
+        {
+            <form method="post">
+                <button type="submit" asp-action="Logout" asp-controller="Account" class="btn btn-primary py-2 px-4 d-none d-lg-block">Logout @User.Identity!.Name</button>
+            </form>
         }
         else
         {

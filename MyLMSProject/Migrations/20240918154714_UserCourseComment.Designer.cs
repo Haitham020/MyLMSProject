@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyLMSProject.Data;
 
@@ -11,9 +12,11 @@ using MyLMSProject.Data;
 namespace MyLMSProject.Migrations
 {
     [DbContext(typeof(LmsDbContext))]
-    partial class LmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240918154714_UserCourseComment")]
+    partial class UserCourseComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -346,9 +349,6 @@ namespace MyLMSProject.Migrations
                     b.Property<int>("CourseType")
                         .HasColumnType("int");
 
-                    b.Property<int>("InstructorId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -358,8 +358,6 @@ namespace MyLMSProject.Migrations
                     b.HasKey("CourseId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("InstructorId");
 
                     b.ToTable("Courses");
                 });
@@ -511,20 +509,12 @@ namespace MyLMSProject.Migrations
             modelBuilder.Entity("MyLMSProject.Models.Course", b =>
                 {
                     b.HasOne("MyLMSProject.Models.Category", "Category")
-                        .WithMany("Courses")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyLMSProject.Models.Instructor", "Instructor")
-                        .WithMany("Courses")
-                        .HasForeignKey("InstructorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Instructor");
                 });
 
             modelBuilder.Entity("MyLMSProject.Models.UserCourse", b =>
@@ -544,21 +534,11 @@ namespace MyLMSProject.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MyLMSProject.Models.Category", b =>
-                {
-                    b.Navigation("Courses");
-                });
-
             modelBuilder.Entity("MyLMSProject.Models.Course", b =>
                 {
                     b.Navigation("Comments");
 
                     b.Navigation("UserCourses");
-                });
-
-            modelBuilder.Entity("MyLMSProject.Models.Instructor", b =>
-                {
-                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

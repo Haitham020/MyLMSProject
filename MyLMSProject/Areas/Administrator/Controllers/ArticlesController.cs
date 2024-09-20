@@ -55,10 +55,23 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArticleId,ArticleTitle,ArticleDescription,ArticleAuthor,ArticleDate,ArticleImg,IsActive,IsDeleted")] Article article)
+        public async Task<IActionResult> Create(Article article, IFormFile ImgFile)
         {
             if (ModelState.IsValid)
             {
+
+                if (ImgFile != null && ImgFile.Length > 0)
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot/img", ImgFile.FileName);
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await ImgFile.CopyToAsync(stream);
+                    }
+
+                    article.ArticleImg = ImgFile.FileName;
+                }
+
                 _context.Add(article);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -87,7 +100,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArticleId,ArticleTitle,ArticleDescription,ArticleAuthor,ArticleDate,ArticleImg,IsActive,IsDeleted")] Article article)
+        public async Task<IActionResult> Edit(int id, Article article, IFormFile ImgFile)
         {
             if (id != article.ArticleId)
             {
@@ -98,6 +111,20 @@ namespace MyLMSProject.Areas.Administrator.Controllers
             {
                 try
                 {
+
+                    if (ImgFile != null && ImgFile.Length > 0)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                            "wwwroot/img/item", ImgFile.FileName);
+                        using (var stream = System.IO.File.Create(filePath))
+                        {
+                            await ImgFile.CopyToAsync(stream);
+                        }
+
+                        article.ArticleImg = ImgFile.FileName;
+                    }
+
+
                     _context.Update(article);
                     await _context.SaveChangesAsync();
                 }
