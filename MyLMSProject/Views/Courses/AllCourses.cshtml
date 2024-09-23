@@ -1,13 +1,12 @@
 ﻿@model IEnumerable<MyLMSProject.Models.Course>
 
 @{
-    ViewData["Title"] = "AllCourses";
+    ViewData["Title"] = "All Courses";
 }
 
 <h1>AllCourses</h1>
 
 
-<!-- Courses Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="row mx-0 justify-content-center">
@@ -19,11 +18,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 pb-4">
-                @foreach(var course in Model) {
+            @foreach (var course in Model)
+            {
+                <div class="col-lg-4 col-md-6 pb-4">
                     <a class="courses-list-item position-relative d-block overflow-hidden mb-2"
-                    asp-action="CourseDetails" asp-route-id="@course.CourseId">
-                        <img class="img-fluid" src="~/img/courses-1.jpg" alt="">
+                       asp-action="CourseDetails" asp-route-id="@course.CourseId">
+                        <img class="img-fluid" src="~/img/@course.CourseImg" alt="">
                         <div class="courses-text">
                             <h4 class="text-center text-white px-3">
                                 @course.CourseTitle
@@ -31,19 +31,13 @@
                             <div class="border-top w-100 mt-3">
                                 <div class="d-flex justify-content-between p-4">
                                     <span class="text-white"><i class="fa fa-user mr-2"></i>@course.CourseHours</span>
-                                    <span class="text-white">
-                                        <i class="fa fa-star mr-2"></i>
-                                        @course.CourseLanguage
-                                    </span>
+                                    <span class="text-white"><i class="fa fa-star mr-2"></i>@course.CourseLanguage</span>
                                 </div>
                             </div>
                         </div>
                     </a>
-                }
-                
-            </div>
-            
-            
+                </div>
+            }
         </div>
     </div>
 </div>

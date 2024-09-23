@@ -1,6 +1,14 @@
 ﻿@model IEnumerable<Instructor>
 
-<!-- Team Start -->
+
+@{
+    ViewData["Title"] = "All Instructors";
+}
+
+
+
+
+
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="section-title text-center position-relative mb-5">
@@ -8,13 +16,13 @@
             <h1 class="display-4">Meet Our Instructors</h1>
         </div>
         <div class="owl-carousel team-carousel position-relative" style="padding: 0 30px;">
-            @foreach(var item in Model)
+            @foreach (var item in Model)
             {
                 <div class="team-item">
                     <img class="img-fluid w-100" src="~/img/@item.InstructorImg" alt="">
                     <div class="bg-light text-center p-4">
                         <a asp-action="InstructorDetails" asp-controller="Instructor"
-                           asp-route-id="@item.InstructorId">
+                        asp-route-id="@item.InstructorId">
                             <h5 class="mb-3">@item.InstructorName</h5>
                             <p class="mb-2">@item.InstructorPosition</p>
                         </a>
@@ -30,7 +38,4 @@
             }
         </div>
     </div>
-</div>
-<div class="w-100 bg-white text-center">
-    <a class="btn btn-warning" asp-action="AllInstructors" asp-controller="Instructor">View All Instructors</a>
 </div>

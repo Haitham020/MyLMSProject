@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administrator\Data\" />
-    <Folder Include="Areas\Administrator\Models\" />
+    <Folder Include="Areas\Administrator\Models\ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>

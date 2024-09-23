@@ -1,0 +1,62 @@
+﻿@model IEnumerable<MyLMSProject.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>UserName</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>
+                        @if (user.InActive)
+                        {
+                            <span class="badge badge-warning">Pending Approval</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-success">Approved</span>
+                        }
+                    </td>
+                    <td>
+                        @if (user.InActive)
+                        {
+                            <form asp-action="ApproveUser" method="post" class="d-inline">
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                            </form>
+                            <a class="btn btn-primary" asp-action="UserDetails" asp-route-id="@user.Id"
+                               asp-controller="Users">Details</a>
+                        }
+                        else
+                        {
+                            <form asp-action="DeactivateUser" method="post" class="d-inline">
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Deactivate</button>
+                            </form>
+                            <a class="btn btn-primary" asp-action="UserDetails" asp-route-id="@user.Id"
+                               asp-controller="Users">Details</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

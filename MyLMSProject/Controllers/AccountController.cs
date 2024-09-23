@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MyLMSProject.Models;
 using MyLMSProject.Models.ViewModels;
 
 namespace MyLMSProject.Controllers
 {
     public class AccountController : Controller
     {
-        private UserManager<IdentityUser> _userManager;
-        private SignInManager<IdentityUser> _signInManager;
+        private UserManager<ApplicationUser> _userManager;
+        private SignInManager<ApplicationUser> _signInManager;
         private RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
@@ -30,11 +31,13 @@ namespace MyLMSProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser
+                ApplicationUser user = new ApplicationUser
                 {
                     Email = model.Email,
                     UserName = model.UserName,
-                    PhoneNumber = model.Mobile
+                    PhoneNumber = model.Mobile,
+                    Active = false,
+                    InActive = true,
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -65,6 +68,12 @@ namespace MyLMSProject.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null)
                 {
+                    if (user.InActive)
+                    {
+                        ModelState.AddModelError("", "Your account is still pending approval. Please wait.");
+                        return View(model);
+                    }
+
                     var result = await _signInManager.PasswordSignInAsync(user.UserName!, model.Password, model.RememberMe, lockoutOnFailure: false);
                     if (result.Succeeded)
                     {

@@ -1,0 +1,59 @@
+﻿@model Category
+
+@{
+    ViewData["Title"] = "Category Courses";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">@Model.CategoryName Category Courses</h1>
+
+  
+    <form asp-action="CategoryCourses" method="post">
+        <div class="form-group row">
+            <label for="category" class="col-sm-2 col-form-label">Select Category:</label>
+            <div class="col-sm-6">
+                <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control" onchange="this.form.submit()">
+                </select>
+            </div>
+        </div>
+    </form>
+
+ 
+    <table class="table table-hover mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th>Course Title</th>
+                <th>Course Description</th>
+                <th>Course Image</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Courses != null && Model.Courses.Any())
+            {
+                @foreach (var item in Model.Courses)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.CourseTitle)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CourseDescription)</td>
+                        <td>
+                            <img src="~/img/@item.CourseImg" alt="Course Image" class="img-fluid" style="max-width: 100px; height: auto;" />
+                        </td>
+                        <td>
+                            <a asp-action="CourseDetails" asp-controller="Courses" asp-route-id="@item.CourseId" class="btn btn-info btn-sm">
+                                More About This Course
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No courses found in this category.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

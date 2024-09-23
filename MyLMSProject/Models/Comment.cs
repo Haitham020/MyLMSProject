@@ -12,7 +12,7 @@ namespace MyLMSProject.Models
 
 
         public string? UserId { get; set; }
-        public IdentityUser? User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public int CourseId { get; set; }
         public Course? Course { get; set; }

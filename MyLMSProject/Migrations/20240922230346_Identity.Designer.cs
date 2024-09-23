@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyLMSProject.Data;
 
@@ -11,9 +12,11 @@ using MyLMSProject.Data;
 namespace MyLMSProject.Migrations
 {
     [DbContext(typeof(LmsDbContext))]
-    partial class LmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922230346_Identity")]
+    partial class Identity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,7 +260,7 @@ namespace MyLMSProject.Migrations
 
                     b.HasKey("ArticleId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("MyLMSProject.Models.Category", b =>
@@ -279,7 +282,7 @@ namespace MyLMSProject.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("MyLMSProject.Models.Comment", b =>
@@ -314,7 +317,7 @@ namespace MyLMSProject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("MyLMSProject.Models.Course", b =>
@@ -367,7 +370,7 @@ namespace MyLMSProject.Migrations
 
                     b.HasIndex("InstructorId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("MyLMSProject.Models.Instructor", b =>
@@ -395,7 +398,7 @@ namespace MyLMSProject.Migrations
 
                     b.HasKey("InstructorId");
 
-                    b.ToTable("Instructors", (string)null);
+                    b.ToTable("Instructors");
                 });
 
             modelBuilder.Entity("MyLMSProject.Models.Menu", b =>
@@ -420,7 +423,7 @@ namespace MyLMSProject.Migrations
 
                     b.HasKey("MenuId");
 
-                    b.ToTable("Menus", (string)null);
+                    b.ToTable("Menus");
                 });
 
             modelBuilder.Entity("MyLMSProject.Models.UserCourse", b =>
@@ -443,7 +446,7 @@ namespace MyLMSProject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCourses", (string)null);
+                    b.ToTable("UserCourses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

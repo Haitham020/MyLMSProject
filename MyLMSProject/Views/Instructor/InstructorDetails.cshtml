@@ -1,0 +1,54 @@
+﻿@model Instructor
+
+@{
+    ViewData["Title"] = "Instructor Details";
+}
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="section-title text-center position-relative mb-5">
+            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Instructor</h6>
+            <h1 class="display-4">@Model.InstructorName</h1>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                <img class="img-fluid rounded-circle w-100" src="~/img/@Model.InstructorImg" alt="@Model.InstructorName">
+            </div>
+            <div class="col-lg-7">
+                <div class="bg-light text-center p-4 rounded shadow-sm">
+                    <h3 class="mb-3">@Model.InstructorName</h3>
+                    <p class="mb-3 text-muted">@Model.InstructorPosition</p>
+                    <div class="d-flex justify-content-center">
+                        <a class="btn btn-outline-dark mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-dark mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-dark mx-1" href="@Model.LinkedInUrl"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-dark mx-1" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="btn btn-outline-dark mx-1" href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="section-title text-center position-relative mb-4">
+        <h2 class="text-uppercase">Courses Taught by @Model.InstructorName</h2>
+    </div>
+
+    <div class="row">
+        @foreach (var course in Model.Courses!)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img class="card-img-top" src="~/img/@course.CourseImg" alt="@course.CourseTitle">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@course.CourseTitle</h5>
+                        <a asp-route-id="@course.CourseId" asp-action="CourseDetails" asp-controller="Courses" class="btn btn-primary">View Course</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

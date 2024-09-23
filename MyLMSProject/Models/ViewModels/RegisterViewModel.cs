@@ -9,7 +9,7 @@ namespace MyLMSProject.Models.ViewModels
         [Required(ErrorMessage = "Enter Email Address")]
         [EmailAddress]
         public string Email { get; set; }
-
+        
         [Required(ErrorMessage = "Enter Password")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -19,5 +19,6 @@ namespace MyLMSProject.Models.ViewModels
         [Compare("Password", ErrorMessage = "Password not match")]
         public string ConfirmPassword { get; set; }
         public string Mobile { get; set; }
+
     }
 }

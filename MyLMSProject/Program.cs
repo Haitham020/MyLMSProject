@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyLMSProject.Data;
+using MyLMSProject.Models;
 using System;
 
 namespace MyLMSProject
@@ -19,7 +20,7 @@ namespace MyLMSProject
                 options.UseSqlServer(builder.Configuration.GetConnectionString("constr"));
             });
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<LmsDbContext>();
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<LmsDbContext>();
 
 
             var app = builder.Build();

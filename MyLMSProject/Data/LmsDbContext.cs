@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using MyLMSProject.Models;
 
 
+
 namespace MyLMSProject.Data
 {
-    public class LmsDbContext : IdentityDbContext
+    public class LmsDbContext : IdentityDbContext<ApplicationUser>
     {
-        public LmsDbContext(DbContextOptions options) : base(options)
+        public LmsDbContext(DbContextOptions<LmsDbContext> options) : base(options)
         {
 
         }
@@ -46,6 +47,7 @@ namespace MyLMSProject.Data
                 .HasOne(uc => uc.Course)
                 .WithMany(c => c.UserCourses)
                 .HasForeignKey(uc => uc.CourseId);
+
         }
     }
 }

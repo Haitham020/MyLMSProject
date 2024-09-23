@@ -23,7 +23,8 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         // GET: Administrator/Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Courses.Include(x => x.Category).ToListAsync());
+            return View(await _context.Courses.Include(x => x.Category)
+                .ToListAsync());
         }
 
         // GET: Administrator/Courses/Details/5
@@ -35,6 +36,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
             }
 
             var course = await _context.Courses.Include(x => x.Category)
+                .Include(x =>x.Instructor)
                 .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
@@ -48,6 +50,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
         public IActionResult Create()
         {
             ViewBag.Dept = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewBag.Instructor = new SelectList(_context.Instructors, "InstructorId", "InstructorName");
             ViewBag.Type = new SelectList(Enum.GetValues(typeof(Course.Type)));
             return View();
         }
@@ -77,6 +80,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Instructor = new SelectList(_context.Instructors, "InstructorId", "InstructorName");
             ViewBag.Dept = new SelectList(_context.Categories, "CategoryId", "CategoryName");
             ViewBag.Type = new SelectList(Enum.GetValues(typeof(Course.Type)));
             return View(course);
@@ -95,6 +99,7 @@ namespace MyLMSProject.Areas.Administrator.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Instructor = new SelectList(_context.Instructors, "InstructorId", "InstructorName");
             ViewBag.Dept = new SelectList(_context.Categories, "CategoryId", "CategoryName");
             ViewBag.Type = new SelectList(Enum.GetValues(typeof(Course.Type)));
             return View(course);
@@ -146,6 +151,9 @@ namespace MyLMSProject.Areas.Administrator.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Type = new SelectList(Enum.GetValues(typeof(Course.Type)));
+            ViewBag.Dept = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewBag.Instructor = new SelectList(_context.Instructors, "InstructorId", "InstructorName");
             return View(course);
         }
 
