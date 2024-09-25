@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyLMSProject.Areas.Administrator.Models.ViewModels;
 using MyLMSProject.Data;
 using MyLMSProject.Models;
+using System.Security.Claims;
 
 
 namespace MyLMSProject.Areas.Administrator.Controllers
@@ -73,24 +75,28 @@ namespace MyLMSProject.Areas.Administrator.Controllers
             return NotFound();
         }
         [HttpGet]
-        public async Task<IActionResult> UserDetails(string id)
+        public async Task<IActionResult> UserDetails(string? id)
         {
-            if (string.IsNullOrEmpty(id))
+            
+            var user = await _db.Users.FindAsync(id);
+
+            var courses = await _db.UserCourses
+                            .Where(x => x.UserId == id)
+                            .Select(x => x.Course!)
+                            .ToListAsync();
+            if(courses == null)
             {
-                return NotFound("User ID not provided.");
+                return NotFound();
             }
-
-            // Retrieve user by ID
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
+            var viewModel = new UserCoursesViewModel
             {
-                return NotFound("User not found.");
-            }
+                User = user,
+                Courses = courses
+            };
 
-            // Pass user details to the view
-            return View(user);
+            return View(viewModel);
         }
+
 
     }
 }

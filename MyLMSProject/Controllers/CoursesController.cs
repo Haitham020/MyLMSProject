@@ -12,12 +12,12 @@ namespace MyLMSProject.Controllers
     public class CoursesController : Controller
     {
         private LmsDbContext db;
-        
+
 
         public CoursesController(LmsDbContext _db)
         {
             db = _db;
-            
+
         }
 
         #region Courses
@@ -26,7 +26,7 @@ namespace MyLMSProject.Controllers
         {
             return View(await db.Courses.OrderByDescending(x => x.CourseId).ToListAsync());
         }
-        
+
 
         [HttpGet]
         public async Task<IActionResult> CourseDetails(int? id)
@@ -35,8 +35,8 @@ namespace MyLMSProject.Controllers
             {
                 return NotFound();
             }
-            var course = await db.Courses.Include(x =>x.Instructor).Include(x => x.Category)
-                .Include(x =>x.Comments!)
+            var course = await db.Courses.Include(x => x.Instructor).Include(x => x.Category)
+                .Include(x => x.Comments!)
                 .ThenInclude(x => x.User)
                 .FirstOrDefaultAsync(m => m.CourseId == id);
 
@@ -58,11 +58,11 @@ namespace MyLMSProject.Controllers
                 return NotFound();
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var course = await db.Courses.Include(x =>x.Category).SingleOrDefaultAsync(x=>x.CourseId == id);
+            var course = await db.Courses.Include(x => x.Category).SingleOrDefaultAsync(x => x.CourseId == id);
 
             var isUserEnrolled = await db.UserCourses
                 .AnyAsync(x => x.UserId == userId && x.CourseId == id);
-            
+
             ViewBag.IsUserEnrolled = isUserEnrolled;
 
             if (course == null)
@@ -87,7 +87,7 @@ namespace MyLMSProject.Controllers
             {
                 return NotFound();
             }
-          
+
             var userCourse = new UserCourse
             {
                 UserId = userId,
@@ -107,7 +107,7 @@ namespace MyLMSProject.Controllers
                 return NotFound();
             }
             var course = await db.Courses.FindAsync(id);
-            if(course == null)
+            if (course == null)
             {
                 return NotFound();
             }
@@ -169,8 +169,55 @@ namespace MyLMSProject.Controllers
 
             db.Comments.Add(comment);
             await db.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            return LocalRedirect($"~/Courses/CourseDetails/{courseId}");
+
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditComment(int courseId, int id, string commentText)
+        {
+     
+            var comment = await db.Comments.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (comment.UserId != userId)
+            {
+                return Forbid();
+            }
+
+            comment.CommentText = commentText;
+            db.Comments.Update(comment);
+            await db.SaveChangesAsync();
+
+            return LocalRedirect($"~/Courses/CourseDetails/{courseId}");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int courseId, int? id)
+        {
+            var comment = await db.Comments.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (comment.UserId != userId)
+            {
+                return Forbid();
+            }
+            db.Comments.Remove(comment);
+            await db.SaveChangesAsync();
+
+            return LocalRedirect($"~/Courses/CourseDetails/{courseId}");
+
+        }
+
         #endregion
 
         #region search
@@ -198,20 +245,20 @@ namespace MyLMSProject.Controllers
         [HttpGet]
         public async Task<IActionResult> CategoryCourses(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
             var result = await db.Categories.Include(x => x.Courses)
                 .FirstOrDefaultAsync(x => x.CategoryId == id);
 
-            if(result == null)
+            if (result == null)
             {
                 return NotFound();
             }
             ViewBag.Categories = new SelectList(db.Categories, "CategoryId", "CategoryName");
             return View(result);
-            
+
         }
         [HttpPost]
         public async Task<IActionResult> CategoryCourses(int CategoryId)

@@ -1,13 +1,12 @@
 ﻿@model Course
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> _signInManager
+@using System.Security.Claims
 
 
 @{
-    ViewData["Title"] = "CourseDetails";
+    ViewData["Title"] = "Course Details";
 }
-
-<h1>CourseDetails</h1>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +39,6 @@
 
 
 
-    <!-- Detail Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="row">
@@ -51,14 +49,9 @@
                             <h1 class="display-4">@Model.CourseTitle</h1>
                         </div>
                         <img class="img-fluid rounded w-100 mb-4" src="~/img/header.jpg" alt="Image">
-                        <p>Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam dolor diam ipsum et, tempor voluptua sit consetetur sit. Aliquyam diam amet diam et eos sadipscing labore. Clita erat ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus clita duo justo et tempor consetetur takimata eirmod, dolores takimata consetetur invidunt magna dolores aliquyam dolores dolore. Amet erat amet et magna</p>
 
                         <p>
-                            Sadipscing labore amet rebum est et justo gubergren. Et eirmod ipsum sit diam ut magna lorem.
-                            Nonumy vero labore lorem sanctus rebum et lorem magna kasd, stet amet magna accusam
-                            consetetur eirmod. Kasd accusam sit ipsum sadipscing et at at sanctus et. Ipsum sit
-                            gubergren dolores et, consetetur justo invidunt at et aliquyam ut et vero clita. Diam sea
-                            sea no sed dolores diam nonumy, gubergren sit stet no diam kasd vero.
+
                         </p>
                     </div>
 
@@ -73,7 +66,7 @@
                                 @Html.DisplayNameFor(model => model.Instructor!.InstructorName)
                             </h6>
                             <a asp-action="InstructorDetails" asp-controller="Instructor"
-                            asp-route-id="@Model.InstructorId">
+                               asp-route-id="@Model.InstructorId">
                                 <h6 class="text-white my-3">@Model.Instructor!.InstructorName</h6>
                             </a>
                         </div>
@@ -135,41 +128,68 @@
     <hr />
     @if (_signInManager.IsSignedIn(User))
     {
-
-        <h3>Comment as: <span class="text my-3">@User.Identity!.Name</span></h3>
-        <form asp-action="PostComment" method="post">
-            <input type="hidden" name="CourseId" value="@Model.CourseId" />
-            <textarea class="form-control border-top-0 border-right-0 border-left-0 p-0" name="text" placeholder="Write your comment..."></textarea>
-            <button class="btn btn-primary" type="submit">Post Comment</button>
-        </form>
+        <div class="comment-form mb-4">
+            <h4 class="mb-3">Comment as: <span class="text-primary">@User.Identity!.Name</span></h4>
+            <form asp-action="PostComment" method="post">
+                <input type="hidden" name="CourseId" value="@Model.CourseId" />
+                <div class="form-group">
+                    <textarea class="form-control border-top-0 border-right-0 border-left-0 p-3 mb-3 shadow-sm" name="text" placeholder="Write your comment..." rows="4"></textarea>
+                </div>
+                <button class="btn btn-primary px-4 py-2 shadow" type="submit">Post Comment</button>
+            </form>
+        </div>
     }
     else
     {
-        <h3 class="alert">Please Login To Post Comment</h3>
-        <a asp-action="Login" asp-controller="Account" class="btn btn-primary">Login</a>
+        <div class="alert alert-warning">
+            <h4>Please Login To Post a Comment</h4>
+            <a asp-action="Login" asp-controller="Account" class="btn btn-primary mt-2">Login</a>
+        </div>
     }
 
     <hr />
-    <h3>Comments</h3>
+    <h3 class="mt-5">Comments</h3>
 
     @if (Model.Comments != null && Model.Comments.Any())
     {
-        foreach (var comment in Model.Comments)
+        @foreach (var comment in Model.Comments)
         {
-            <div class="col-lg-4 mt-5 mt-lg-0">
-                <p><strong>@comment.User?.UserName</strong> (@comment.CommentCreatedAt)</p>
-                <p>@comment.CommentText</p>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title mb-0 text-primary">@comment.User?.UserName</h5>
+                        <small class="text-muted">@comment.CommentCreatedAt.ToString("dddd, MMMM dd, yyyy hh:mm tt")</small>
+                    </div>
+
+
+                    @if (comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+                        <form asp-controller="Courses" asp-action="EditComment" class="mb-2" method="post">
+                            <input type="hidden" name="Id" value="@comment.CommentId" />
+                            <input type="hidden" name="CourseId" value="@Model.CourseId" />
+                            <textarea class="form-control" name="CommentText">@comment.CommentText</textarea>
+                            <button type="submit" class="btn btn-success btn-sm">Edit</button>
+                            <a asp-action="CourseDetails" asp-route-courseId="@Model.CourseId" class="btn btn-warning btn-sm">Cancel</a>
+                        </form>
+                        <form asp-controller="Courses" asp-action="DeleteComment" class="d-inline" method="post">
+                            <input type="hidden" name="id" value="@comment.CommentId" />
+                            <input type="hidden" name="CourseId" value="@Model.CourseId" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this comment?');">Delete</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="card-text">@comment.CommentText</p>
+                    }
+
+                </div>
             </div>
-            <hr />
         }
     }
     else
     {
-        <p>No comments yet. Be the first to comment!</p>
+        <p class="text-muted">No comments yet. Be the first to comment!</p>
     }
-
-
-
 
 
 
@@ -187,6 +207,7 @@
 
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
+
 </body>
 
 </html>

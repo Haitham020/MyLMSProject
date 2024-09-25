@@ -1,29 +1,56 @@
-﻿@model MyLMSProject.Models.ApplicationUser
+﻿@model MyLMSProject.Areas.Administrator.Models.ViewModels.UserCoursesViewModel
 
 @{
     ViewData["Title"] = "User Details";
 }
 
+<style>
+    /* Custom styles for the table */
+    .table-modern {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .table-modern th, .table-modern td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #dee2e6;
+    }
+    .table-modern thead th {
+        background-color: #007bff;
+        color: white;
+    }
+    .table-modern tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+    .table-modern tbody tr:hover {
+        background-color: #e2e6ea;
+        transition: background-color 0.3s;
+    }
+    .badge {
+        font-size: 0.9rem;
+    }
+</style>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-           
-            <div class="card mb-4">
+            <!-- User Information Card -->
+            <div class="card mb-4 shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">User Information</h4>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">@Model.UserName</h5>
+                    <h5 class="card-title">@Model.User!.UserName</h5>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <strong>Email:</strong> @Model.Email
+                            <strong>Email:</strong> @Model.User.Email
                         </li>
                         <li class="list-group-item">
-                            <strong>Phone Number:</strong> @Model.PhoneNumber
+                            <strong>Phone Number:</strong> @Model.User.PhoneNumber
                         </li>
                         <li class="list-group-item">
                             <strong>Status:</strong>
-                            @if (Model.Active)
+                            @if (Model.User.Active)
                             {
                                 <span class="badge bg-success">Active</span>
                             }
@@ -36,17 +63,17 @@
                 </div>
             </div>
 
-            
-            @* <div class="card">
+            <!-- Enrolled Courses Card -->
+            <div class="card mb-4 shadow-sm">
                 <div class="card-header bg-secondary text-white">
                     <h4 class="mb-0">Enrolled Courses</h4>
                 </div>
                 <div class="card-body">
-                    @if (Model.Courses.Any())
+                    @if (Model.Courses!.Any())
                     {
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead class="thead-dark">
+                            <table class="table-modern">
+                                <thead>
                                     <tr>
                                         <th>Course Title</th>
                                         <th>Description</th>
@@ -54,7 +81,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var course in Model.Courses)
+                                    @foreach (var course in Model.Courses!)
                                     {
                                         <tr>
                                             <td>@course.CourseTitle</td>
@@ -71,7 +98,12 @@
                         <p class="text-muted">No enrolled courses.</p>
                     }
                 </div>
-            </div> *@
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center">
+                <a asp-action="Index" asp-controller="Users" class="btn btn-info">Back to All Users</a>
+            </div>
         </div>
     </div>
 </div>

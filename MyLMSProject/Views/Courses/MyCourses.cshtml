@@ -1,28 +1,28 @@
 ﻿@model IEnumerable<MyLMSProject.Models.Course>
 
 @{
-    ViewData["Title"] = "MyCourses";
+    ViewData["Title"] = "My Courses";
 }
 
-<h1>MyCourses</h1>
+<h1>My Courses</h1>
 
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="row mx-0 justify-content-center">
             <div class="col-lg-8">
                 <div class="section-title text-center position-relative mb-5">
-                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Our Courses</h6>
-                    <h1 class="display-4">Your Courses</h1>
+                    <h1 class="display-4">Courses for @User.Identity!.Name</h1>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 pb-4">
-                @foreach (var course in Model)
-                {
+
+            @foreach (var course in Model)
+            {
+                <div class="col-lg-4 col-md-6 pb-4">
                     <a class="courses-list-item position-relative d-block overflow-hidden mb-2"
                        asp-action="CourseDetails" asp-route-id="@course.CourseId">
-                        <img class="img-fluid" src="~/img/courses-1.jpg" alt="">
+                        <img class="img-fluid" src="~/img/@course.CourseImg" alt="">
                         <div class="courses-text">
                             <h4 class="text-center text-white px-3">
                                 @course.CourseTitle
@@ -38,9 +38,10 @@
                             </div>
                         </div>
                     </a>
-                }
+                </div>
+            }
 
-            </div>
+
 
 
         </div>

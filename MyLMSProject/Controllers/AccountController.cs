@@ -31,6 +31,13 @@ namespace MyLMSProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existedEmail = await _userManager.FindByEmailAsync(model.Email!);
+                if(existedEmail != null)
+                {
+                    ModelState.AddModelError("Mobile", "Password or Email credentials wrong");
+                    return View(model);
+                }
+
                 ApplicationUser user = new ApplicationUser
                 {
                     Email = model.Email,
@@ -39,7 +46,7 @@ namespace MyLMSProject.Controllers
                     Active = false,
                     InActive = true,
                 };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password!);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Login", "Account");
@@ -65,7 +72,7 @@ namespace MyLMSProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email!);
                 if (user != null)
                 {
                     if (user.InActive)
@@ -74,7 +81,7 @@ namespace MyLMSProject.Controllers
                         return View(model);
                     }
 
-                    var result = await _signInManager.PasswordSignInAsync(user.UserName!, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName!, model.Password!, model.RememberMe, lockoutOnFailure: false);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index", "Home");
